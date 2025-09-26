@@ -1,0 +1,67 @@
+@model List<HealthForumMVC.Models.Post>
+@{
+    ViewData["Title"] = "Quản lý bài viết";
+    Layout = "_AdminLayout";
+}
+
+<div class="p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">Quản lý bài viết</h1>
+        <span class="text-sm text-gray-600">Tổng: @Model.Count bài viết</span>
+    </div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tiêu đề</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tác giả</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Danh mục</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lượt xem</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ngày tạo</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach (var post in Model)
+                {
+                    <tr>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                @if (post.IsPinned)
+                                {
+                                    <i data-lucide="pin" class="h-4 w-4 text-blue-600 mr-2"></i>
+                                }
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">@post.Title</div>
+                                    <div class="text-sm text-gray-500">@(post.Content.Length > 50 ? post.Content.Substring(0, 50) + "..." : post.Content)</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900">@post.Author.FullName</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">@post.Category.Name</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">@post.ViewCount</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">@post.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        <td class="px-6 py-4 text-sm font-medium space-x-2">
+                            <a href="/Home/PostDetail/@post.Id" class="text-blue-600 hover:text-blue-900">Xem</a>
+                            <form asp-action="TogglePin" method="post" class="inline">
+                                <input type="hidden" name="id" value="@post.Id" />
+                                <button type="submit" class="text-yellow-600 hover:text-yellow-900">
+                                    @(post.IsPinned ? "Bỏ ghim" : "Ghim")
+                                </button>
+                            </form>
+                            <form asp-action="DeletePost" method="post" class="inline" onsubmit="return confirm('Bạn có chắc muốn xóa bài viết này?')">
+                                <input type="hidden" name="id" value="@post.Id" />
+                                <button type="submit" class="text-red-600 hover:text-red-900">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+</script>

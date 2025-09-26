@@ -1,0 +1,58 @@
+@model List<HealthForumMVC.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Quản lý người dùng";
+    Layout = "_AdminLayout";
+}
+
+<div class="p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">Quản lý người dùng</h1>
+        <span class="text-sm text-gray-600">Tổng: @Model.Count người dùng</span>
+    </div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Người dùng</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vai trò</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Uy tín</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ngày tham gia</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Hoạt động cuối</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                                    <span class="text-sm font-medium">@user.FullName.Substring(0, 1)</span>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">@user.FullName</div>
+                                    <div class="text-sm text-gray-500">@@@user.UserName</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900">@user.Email</td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                @(user.Role == HealthForumMVC.Models.UserRole.Admin ? "bg-red-100 text-red-800" : 
+                                  user.Role == HealthForumMVC.Models.UserRole.Moderator ? "bg-yellow-100 text-yellow-800" : 
+                                  "bg-green-100 text-green-800")">
+                                @(user.Role == HealthForumMVC.Models.UserRole.Admin ? "Admin" :
+                                  user.Role == HealthForumMVC.Models.UserRole.Moderator ? "Moderator" : "User")
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900">@user.Reputation</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">@user.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">@user.LastActive.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

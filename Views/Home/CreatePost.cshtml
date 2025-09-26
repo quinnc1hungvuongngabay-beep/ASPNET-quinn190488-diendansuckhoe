@@ -1,0 +1,106 @@
+@model HealthForumMVC.Models.Post
+@{
+    ViewData["Title"] = "Tạo bài viết mới";
+    var categories = ViewBag.Categories as List<HealthForumMVC.Models.Category>;
+}
+
+<div class="p-6 max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Tạo bài viết mới</h1>
+            <p class="text-gray-600">Chia sẻ kiến thức và kinh nghiệm của bạn với cộng đồng</p>
+        </div>
+
+        <form asp-action="CreatePost" method="post" class="space-y-6">
+            <!-- Title -->
+            <div>
+                <label asp-for="Title" class="block text-sm font-medium text-gray-700 mb-2">
+                    Tiêu đề bài viết *
+                </label>
+                <input asp-for="Title" type="text" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                       placeholder="Nhập tiêu đề bài viết của bạn...">
+                <span asp-validation-for="Title" class="text-red-500 text-sm"></span>
+            </div>
+
+            <!-- Category -->
+            <div>
+                <label asp-for="CategoryId" class="block text-sm font-medium text-gray-700 mb-2">
+                    Danh mục *
+                </label>
+                <select asp-for="CategoryId" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="">Chọn danh mục</option>
+                    @if (categories != null)
+                    {
+                        @foreach (var category in categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="text-red-500 text-sm"></span>
+            </div>
+
+            <!-- Content -->
+            <div>
+                <label asp-for="Content" class="block text-sm font-medium text-gray-700 mb-2">
+                    Nội dung bài viết *
+                </label>
+                <textarea asp-for="Content" rows="12"
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                          placeholder="Viết nội dung bài viết của bạn..."></textarea>
+                <span asp-validation-for="Content" class="text-red-500 text-sm"></span>
+                <p class="text-sm text-gray-500 mt-2">
+                    Hãy viết nội dung chi tiết và hữu ích để giúp đỡ cộng đồng
+                </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                <a href="/" class="text-gray-600 hover:text-gray-800 font-medium">
+                    ← Quay lại trang chủ
+                </a>
+                <div class="flex space-x-3">
+                    <button type="button" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                        Lưu nháp
+                    </button>
+                    <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i data-lucide="send" class="h-4 w-4 inline-block mr-2"></i>
+                        Đăng bài viết
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Guidelines -->
+    <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-blue-900 mb-3">
+            <i data-lucide="info" class="h-5 w-5 inline-block mr-2"></i>
+            Hướng dẫn viết bài
+        </h3>
+        <ul class="space-y-2 text-blue-800">
+            <li class="flex items-start">
+                <span class="text-blue-600 mr-2">•</span>
+                Sử dụng tiêu đề rõ ràng, mô tả chính xác nội dung bài viết
+            </li>
+            <li class="flex items-start">
+                <span class="text-blue-600 mr-2">•</span>
+                Chọn đúng danh mục để bài viết dễ dàng được tìm thấy
+            </li>
+            <li class="flex items-start">
+                <span class="text-blue-600 mr-2">•</span>
+                Viết nội dung chi tiết, có cấu trúc và dễ hiểu
+            </li>
+            <li class="flex items-start">
+                <span class="text-blue-600 mr-2">•</span>
+                Tôn trọng quy tắc cộng đồng và không chia sẻ thông tin y tế cá nhân
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
